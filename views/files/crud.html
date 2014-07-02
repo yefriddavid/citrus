@@ -1,0 +1,66 @@
+<link rel="stylesheet" href="css/dropzone.css" />
+<script src="js/dropzone.js"></script>
+
+<div ng-show="showContent" class="well">
+    <div id="dropzone">
+        <form action="api/upload.php" class="dropzone">
+            <div class="fallback">
+                <input name="files" type="file" multiple="" />
+                <!--<input name="questionId" type="text" value='yefrid' />-->
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    jQuery(function($) {    
+//        try {
+            var myDropzone = new Dropzone(".dropzone",{
+                paramName: "files", // The name that will be used to transfer the file
+                maxFilesize: 10, // original 0.5 MB
+
+                addRemoveLinks: true,
+                dictDefaultMessage:
+                        '<span class="bigger-150 bolder"><i class="icon-caret-right red"></i> Drop files</span> to upload \
+                <span class="smaller-80 grey">(or click)</span> <br /> \
+                <i class="upload-icon icon-cloud-upload blue icon-3x"></i>'
+                ,
+                dictResponseError: 'Error while uploading file!',
+                previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-details\">\n    <div class=\"dz-filename\"><span data-dz-name></span></div>\n    <div class=\"dz-size\" data-dz-size></div>\n    <img data-dz-thumbnail />\n  </div>\n  <div class=\"progress progress-small progress-striped active\"><div class=\"progress-bar progress-bar-success\" data-dz-uploadprogress></div></div>\n  <div class=\"dz-success-mark\"><span></span></div>\n  <div class=\"dz-error-mark\"><span></span></div>\n  <div class=\"dz-error-message\"><span data-dz-errormessage></span></div>\n</div>",
+                init: function () {
+                    this.on("addedfile", function(file) {
+
+                    });
+                    this.on("removedfile", function (file) {
+                        $.ajax({   
+                            url: 'api/upload.php',   
+                            data: { file: file.name,files:"" },
+                            type: 'DELETE',   success: function(data) { 
+
+                            }});                          
+                    });
+                }
+            });
+          
+            $.get( "api/files", function( data ) {
+                if(data){
+                    $.each(data, function( index, value ) {
+                      //alert( index + ": " + value );
+                        var mockFile = { 
+                            name: value.localFileName, 
+                            size: value.size
+                        };
+                        myDropzone.options.addedfile.call(myDropzone, mockFile);
+                        myDropzone.options.thumbnail.call(myDropzone, mockFile, value.thumbnails);// "api/thumbnails/" + $('#questionId').val() + "/" + value.name);
+                        $('div[data-dz-uploadprogress]').css("width","100%");                            
+                    });
+                }
+            });
+            
+//        } catch (e) {
+//            alert('Dropzone.js does not support older browsers!');
+//        }
+
+    });
+</script>

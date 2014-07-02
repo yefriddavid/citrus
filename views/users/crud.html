@@ -1,0 +1,74 @@
+<div ng-show="showContent" class="well">
+    <form id="frmData" name="frmData" enctype="application/x-www-form-urlencoded" class="form-horizontal" action="" method="post">
+        <fieldset id="fieldset-info">
+            <legend>Informaci&oacute;n B&aacute;sica</legend>
+
+            <div class="form-group">
+                <div class="col-md-8"><div class="input-group ">
+                        <span class="input-group-addon">Identificación</span>
+                        <input type="text" ng-model="user.identification" class="form-control">
+                    </div>                        
+                    <span style="width: 1200px; padding: 0px; display: none;" class="help-inline alert alert-block error" ng-show="frmData.identification.$error.required">
+                        <i class="icon-ban-circle red"></i> La identificaci&oacute;n es requerida<br>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-8">
+                    <div class="input-group ">
+                        <span class="input-group-addon">Usuario</span>
+                        <input type="text" ng-model="user.login" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-8">
+                    <div class="input-group ">
+                        <span class="input-group-addon">Nombre</span>
+                        <input type="text" ng-model="user.fullName" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-8">
+                    <div class="input-group ">
+                        <span class="input-group-addon">Email</span>
+                        <input type="text" ng-model="user.mail" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-8">
+                    <div class="input-group ">
+                        <span class="input-group-addon">Contraseña</span>
+                        <input type="password" ng-model="user.password" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-8">
+                    <div class="input-group ">
+                        <span class="input-group-addon">Usuario de solo lectura</span>
+                        <input ng-checked="true" type="checkbox" ng-true-value="0" ng-false-value="1" ng-init="user.isRoot=0" ng-model="user.isRoot" class="form-control1">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group pull-left">
+                <div class="col-md-12">
+                    <div class="btn-group">
+                        <button ng-click="back()" type="button" class="btn btn-info">
+                            <span class="glyphicon glyphicon-off"></span>
+                            Regresar
+                        </button>
+
+                        <button ng-disabled="settings.btnSave"  ng-click="save()" ng-disabled="isValid()" type="button" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-floppy-disk"></span>
+                            Guardar
+                        </button>                       
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>                
+</div>

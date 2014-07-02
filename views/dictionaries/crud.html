@@ -1,0 +1,42 @@
+<div ng-show="showContent" class="well">
+    <form id="frmData" name="frmData" enctype="application/x-www-form-urlencoded" class="form-horizontal" action="" method="post">
+        <fieldset id="fieldset-info">
+            <legend>Informaci&oacute;n B&aacute;sica</legend>
+
+            <div class="form-group idTipoIdentificacion">
+                <div class="col-md-8"><div class="input-group ">
+                        <span class="input-group-addon">Termino</span>
+                        <input type="text" ng-model="dictionary.term" class="form-control">
+                    </div>                        
+                    <span style="width: 100%; padding: 0px; display: none;" class="help-inline alert alert-block error" ng-show="frmData.name.$error.required">
+                        <i class="icon-ban-circle red"></i> El consecutivo es requerido <br>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group comentario">
+                <div class="col-md-8">
+                    <div class="input-group ">
+                        <span class="input-group-addon">Definici&oacute;n</span>
+                        <textarea ng-model="dictionary.definition" with="12" rows="5" cols="5" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group pull-left">
+                <div class="col-md-12">
+                    <div class="btn-group">
+                        <button ng-click="back()" type="button" class="btn btn-info">
+                            <span class="glyphicon glyphicon-off"></span>
+                            Regresar
+                        </button>
+
+                        <button ng-disabled="settings.btnSave"  ng-click="save()" ng-disabled="isValid()" type="button" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-floppy-disk"></span>
+                            Guardar
+                        </button>                       
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>                
+</div>

@@ -1,0 +1,301 @@
+<link rel="stylesheet" href="css/dropzone.css" />
+<script src="js/dropzone.js"></script>
+
+<div class='row' ng-show="showContent">
+    <div class='col-sm-12 col-xs-12'>
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="javascript:void(0)" data-toggle="tab">Cuestionario</a> </li>
+            <li class="pull-right">
+                <div class='btn-group'>
+                    <button ng-click="openDictionary()" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-search"></span> Diccionario</button>
+                    <button ng-click="openQuestions()" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-search"></span> Preguntas</button>
+                </div>                
+                <div class='btn-group'>
+                    <button ng-click="printQuestion('lg')" ng-disabled="!question" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-print"></span> Imprimir</button>
+                    <button ng-click="openMail()" ng-disabled="!question" class="btn btn-sm btn-info"><span class="glyphicon glyphicon-envelope"></span> Enviar</button>
+                    <button ng-click="openFiles()" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-paperclip"></span> Ver Anexos</button>
+                </div>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab1">
+                
+                <div class="printZone">
+                    <div class="page-header">
+                        <h2>
+                            Pregunta {{question.userCode}}
+                            
+                            <div class='btn-group pull-right'>
+                                <button style="display: none;" ng-click="backOrNext(false)" ng-disabled="!seletedQuestions" class="btn btn-sm btn-primary btnNext"><span class="glyphicon glyphicon-step-backward"></span> Anterior</button>
+                                <button style="display: none;" ng-click="backOrNext(true)" ng-disabled="!seletedQuestions" class="btn btn-sm btn-primary btnNext"><span class="glyphicon glyphicon-step-forward"></span> Siguiente</button>
+                            </div>                            
+                        </h2>
+                    </div>
+                    <div class="bs-callout bs-callout-info">
+                        <h4>Contenido</h4>
+                        <p data-ng-bind-html="question.question"></p>                    
+                    </div>
+
+                    <div class="page-header">
+                        <h1>
+                            Respuesta
+                        </h1>
+                    </div>
+                    <div class="bs-callout bs-callout-danger">
+                        <h4>Descripci&oacute;n</h4>
+                        <p data-ng-bind-html="question.response"></p>
+                    </div>  
+                </div>
+                
+                
+                <div class="page-header">
+                    <h2>
+                        Archivos
+                    </h2>
+                </div>
+                <div class="bs-callout bs-callout-warning">
+                    <div ng-show="question.questionId" class="">
+                        <div id="dropzone">
+                            <form action="" class="dropzone dz-started">                                
+                            
+                                <div ng-repeat="file in files" style="float: left;">
+                                    <div style="cursor:pointer;" class="dz-preview dz-image-preview">
+                                        <div class="dz-details">
+                                            <div class="dz-filename"><span data-dz-name="">{{file.name}}</span></div>
+                                            <div class="dz-size" data-dz-size=""><strong>{{file.size}}</strong> b</div>
+                                            <img ng-click="openViewFiles(file)" data-dz-thumbnail="" alt="{{file.thumbnails}}" src="{{file.thumbnails}}">
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>                            
+                        </div>
+                    </div>
+                </div>          
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<iframe style="display:none;" id="iFramePdf"></iframe>
+
+
+
+
+<!--dictionaryModal-->
+    <script type="text/ng-template" id="dictionaryModal.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Diccionario</h3>
+        </div>
+        <div class="modal-body">
+            <label>Buscar</label>
+            <input type="text" ng-model="search.$">
+            <div style="overflow-y:scroll;overflow-x:hidden;max-height:300px">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                Termino
+                            </th>
+                            <th>
+                                Definici&oacute;n                    
+                            </th>                    
+                        </tr>
+                    </thead>
+                    <tbody id="bookmarks-list">
+                        <tr ng-repeat="dictionary in dictionaries| filter:search">
+                            <td>
+                                {{dictionary.term}}
+                            </td>                     
+
+                            <td title="{{dictionary.definition}}">
+                                {{dictionary.definition}}
+                            </td>
+                        </tr>
+                    </tbody>    
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-warning" ng-click="cancel()">Salir</button>
+        </div>
+    </script>
+    
+    
+    
+    <script type="text/ng-template" id="questionsModal.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Preguntas</h3>
+        </div>
+        <div class="modal-body">
+<label>Buscar</label>
+<input type="text" ng-model="search.$">
+<div style="overflow-y:scroll;overflow-x:hidden;max-height:300px">
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    Selecciona
+                </th>
+                <th>
+                    Pregunta N&uacute;mero
+                </th>
+                <th>
+                    Categor&iacute;a
+                </th>
+                <th>
+                    Pregunta
+                </th>            
+
+                <th>
+                    Respuesta corta
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="question in questions| filter:search">
+                <td>
+                    <input name="item" type="checkbox" ng-model="check" ng-click="seletedItem(check,question)" />
+                </td>
+                <td>
+                    {{question.userCode}}
+                </td>
+                <td>
+                    {{question.categorie}}
+                </td>            
+                <td title="{{text(question.question)}}">
+                    {{text(question.question)}}
+                </td>
+                <td title="{{text(question.response)}}">
+                    {{text(question.response)}}
+                </td>
+            </tr>
+        </tbody>    
+    </table>
+        </div>
+        </div>
+        <div class="modal-footer">
+            <button ng-disabled="isOkValid()" class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>    
+    
+    
+    <script type="text/ng-template" id="filesModal.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Anexos</h3>
+        </div>
+        <div class="modal-body">
+        <label>Buscar</label>
+        <input type="text" ng-model="search.localFileName">
+            <div style="overflow-y:scroll;overflow-x:hidden;max-height:300px">
+
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                Archivo
+                            </th>
+                            <th>
+                                Descargar
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="bookmarks-list">
+                        <tr ng-repeat="file in files| filter:search">
+                            <td>
+                                {{file.localFileName}}
+                            </td>
+                            <td>
+                                <a target="_blank" href="api/files/{{file.localFileName}}" class="btn btn-danger btn-sm">
+                                    <span class="glyphicon glyphicon-download-alt"></span>                    
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>    
+                </table>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-warning" ng-click="cancel()">Salir</button>
+        </div>
+    </script>    
+    
+    
+    
+    <!--<a target="_blank"-->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <script type="text/ng-template" id="mailModal.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Email</h3>
+        </div>
+        <div class="modal-body">
+            
+            <form id="frmData" name="frmData" enctype="application/x-www-form-urlencoded" class="form-horizontal" action="" method="post">
+                    <div class="form-group">
+                        <div class="col-md-8"><div class="input-group ">
+                                <span class="input-group-addon">Destinatario</span>
+                                <input type="text" ng-model="mail.to" class="form-control">
+                            </div>                        
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-8"><div class="input-group ">
+                                <span class="input-group-addon">Asunto</span>
+                                <input type="text" ng-model="mail.subject" class="form-control">
+                            </div>                        
+                        </div>
+                    </div>
+            </form>                
+        
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="sendMail(this.mail)">Enviar</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>        
+    
+    
+    
+    
+
+    
+    <script type="text/ng-template" id="fileViewModal.html">
+        <!--<div class="modal-header">
+            <h3 class="modal-title">
+                <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+                Visor de Archivos
+            </h3>
+        </div>-->
+        <div class="modal-body">
+        
+            <div class='btn-group pull-right'>
+                <a href="api/files/{{question.questionId}}/{{file.name}}" target="_blank" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-download-alt"></span> Descargar</a>
+                <button ng-click="cancel()" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-off"></span> Cerrar</button>
+            </div>             
+        <!--{{id}}-->
+                    <iframe style="width:100%;height:800px;"
+                    border="0"
+                    scrolling="auto"
+                    frameborder="0"
+                    name="iframeAdmision"
+                    id="iframeAdmision" ng-init="initIframe()"/>
+        
+                    <!--https://docs.google.com/document/d/16XNinBR3PpndYaJbTNDxkHIi_S4nfGbkzOT_hFae3Kk/edit?usp=sharing-->
+            
+        </div>
+    </script>  
+    

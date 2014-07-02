@@ -1,0 +1,69 @@
+
+
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#/home">
+                
+                PERITAJE 1.0</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#/home">Inicio</a></li>
+                <li><a ng-show="isRoot==1" href="#/users">Usuarios</a></li>
+                <li><a ng-show="isRoot==1" href="#/categories">Categor&iacute;as</a></li>
+                <li><a ng-show="isRoot==1" href="#/dictionaries">Diccionario</a></li>
+                <li><a ng-show="isRoot==1" href="#/questions">Preguntas</a></li>
+                <li><a ng-show="isRoot==1" href="#/parameters">Par&aacute;metros</a></li>
+                <li><a href="#/support">Soporte</a></li>
+                <li><a href="javascript:void(0)" ng-click="logout()">Desconectar</a></li>
+            </ul>
+            <!--          <form class="navbar-form navbar-right">
+                        <input type="text" class="form-control" placeholder="Search...">
+                      </form>-->
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li ng-class="ActiveItemHome"><a href="#/home"><span class="glyphicon glyphicon-home"></span> Inicio</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li ng-show="isRoot==1" ng-class="ActiveItemCategories"><a href="#/categories"><span class="glyphicon glyphicon-list"></span> Categor&iacute;as</a></li>
+                <li ng-show="isRoot==1" ng-class="ActiveItemDictionaries"><a href="#/dictionaries"><span class="glyphicon glyphicon-tasks"></span> Diccionario</a></li>
+                <li ng-show="isRoot==1" ng-class="ActiveItemQuestions"><a href="#/questions"><span class="glyphicon glyphicon-list-alt"></span> Preguntas</a></li>
+                <li ng-show="isRoot==1" ng-class="ActiveItemUsers"><a href="#/users"><span class="glyphicon glyphicon-user"></span> Usuarios</a></li>
+                <li ng-show="isRoot==1" ng-class="ActiveItemParameters"><a href="#/parameters"><span class="glyphicon glyphicon-asterisk"></span> Par&aacute;metros</a></li>
+                <li ng-show="isRoot==1" ng-class="ActiveItemFiles"><a href="#/files"><span class="glyphicon glyphicon-folder-open"></span> Soportes o Archivos</a></li>
+                <li ng-class="ActiveItemSupport"><a href="#/support"><span class="glyphicon glyphicon-question-sign"></span> Soporte</a></li>
+                <li><a href="javascript:void(0)" ng-click="logout()"><span class="glyphicon glyphicon-off"></span> Desconectar</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h1 class="page-header">{{title}} <small> >> {{description}}</small> 
+                <!--<img class="pull-right" alt="Parece que no esta el icono" src="img/icono2.png">-->
+                <img class="pull-right img-responsive" alt="Parece que no esta el icono" src="img/Logotipo_Integra_pequeno.png">
+            </h1>
+            
+            <!--<div>-->     
+            
+            <div ng-init="showContent=true" ng-view></div>
+            <!--</div>-->
+
+        </div>
+    </div>
+</div>
+
+<!--<script type="text/ng-template" id="homekkkk.html">     
+
+fdsafdsa
+</script>              -->

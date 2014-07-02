@@ -1,0 +1,202 @@
+<script src="js/ckeditor/ckeditor.js"></script>
+<!--<link rel="stylesheet" href="css/dropzone.css" />
+<script src="js/dropzone.js"></script>-->
+
+      <style>
+        .dropdown-header {
+          font-size: 1.2em;
+        }
+        .dropdown-header > span {
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+          text-align: left;
+          display: inline-block;
+          border-style: solid;
+          border-width: 0 0 1px 1px;
+          padding: .3em .6em;
+          width: 79%;
+        }
+        .dropdown-header > span:first-child {
+          width: 82px;
+          border-left-width: 0;
+        }
+        .demo-section {
+          width: 400px;
+          padding: 30px;
+        }
+        .demo-section h2 {
+          text-transform: uppercase;
+          font-size: 1.2em;
+          margin-bottom: 10px;
+        }
+        .selected-value {
+          float: left;
+          width: 20px;
+          margin: 0 4px;
+        }
+        #customers-list .k-item > span{
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+          display: inline-block;
+          border-style: solid;
+          border-width: 0 0 1px 1px;
+          vertical-align: top;
+          min-height: 95px;
+          width: 79%;
+          padding: .6em 0 0 .6em;
+        }
+        #customers-list .k-item > span:first-child{
+          width: 77px;
+          border-left-width: 0;
+          padding: .6em 0 0 0;
+        }
+        #customers-list img {
+          -moz-box-shadow: 0 0 2px rgba(0,0,0,.4);
+          -webkit-box-shadow: 0 0 2px rgba(0,0,0,.4);
+          box-shadow: 0 0 2px rgba(0,0,0,.4);
+          width: 70px;
+          height: 70px;
+        }
+        #customers-list h3 {
+          font-size: 1.6em;
+          margin: 0;
+          padding: 0;
+        }
+        #customers-list p {
+          margin: 0;
+          padding: 0;
+        }
+      </style>
+
+<div ng-show="showContent" class="well">
+    <form ng-init="Init()" id="frmData" name="frmData" enctype="application/x-www-form-urlencoded" class="form-horizontal" action="" method="post">
+        <fieldset id="fieldset-info">
+            <legend>
+                Informaci&oacute;n B&aacute;sica
+                <button ng-show="false" ng-click="openFilesQuestions('lg')" class="btn btn-primary btn-sm pull-right">
+                    <span class="glyphicon glyphicon-upload"></span>
+                    Subir Im&aacute;genes
+                </button>
+            </legend>
+            <input style='display:none;' name="questionId" id='questionId' type="text" value='{{question.questionId}}' />
+            <div class="form-group idTipoIdentificacion">
+                <div class="col-md-8"><div class="input-group ">
+                        <span class="input-group-addon">Pregunta N&uacute;mero</span>
+                        <input required type="text" ng-model="question.userCode" class="form-control">
+                    </div>                        
+<!--                    <span style="width: 100%; padding: 0px; display: none;" class="help-inline alert alert-block error" ng-show="frmData.name.$error.required">
+                        <i class="icon-ban-circle red"></i> El consecutivo es requerido <br>
+                    </span>-->
+                </div>
+            </div>
+            <div class="form-group idTipoIdentificacion">
+                <div class="col-md-8"><div class="input-group ">
+                        <span class="input-group-addon">Categor&iacute;a</span>
+                        <!--<select ng-options="option.categorieId as option.name for option in categories" ng-model="question.categorieId" class="form-control">-->
+                        <select ng-model="question.categorieId" class="form-control">
+                            <option value="" selected="selected">Seleccione</option>
+                            <option ng-repeat="categorie in categories" title="{{categorie.description}}" value="{{categorie.categorieId}}">{{categorie.name}}</option>
+                        </select>                        
+<!--                        <select ng-model="question.cateogrieId">
+                            <option title="yefrid">ddd</option>
+                        </select>-->
+                        <!--<select kendo-drop-down-list style="width: 100%" k-options="customOptions"></select>-->
+                    </div>                        
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-8">                        
+                    <h4>Pregunta</h4>
+                    <!--<textarea ng-show="false" id="question" name="question" ng-model="question.question"></textarea>-->                                     
+                    <textarea ckeditor ng-model="question.question"></textarea>                                     
+                </div>
+            </div>
+            <div class="form-group comentario">
+                <div class="col-md-8">                        
+                    <h4>Respuesta</h4>
+                    <!--<textarea kendo-editor ng-model="question.response"></textarea>-->
+                    <!--<textarea ng-show="false" id="response" name="response" ng-model="question.response"></textarea>-->
+                    <textarea ckeditor ng-model="question.response"></textarea>
+                </div>
+            </div>
+            <!--allFiles-->
+            <div class="form-group">
+                <div class="col-md-8">    
+                <label>Buscar</label>
+                <input type="text" ng-model="search.localFileName">                
+                <table ng-disabled="!$scope.question" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Archivo
+                                </th>
+                                <th>
+                                    Seleccionar
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookmarks-list">
+                            <tr ng-repeat="file in allFiles| filter:search">
+                                <td>
+                                    {{file.localFileName}}
+                                </td>
+                                <td>
+                                    <input ng-checked="question.questionId==file.questionId && file.questionId" ng-change="checkedFile(file.checked,file.fileId)" ng-model="file.checked" type="checkbox"/>
+                                </td>
+                            </tr>
+                        </tbody>    
+                    </table>              
+                </div>
+            </div>
+            <div class="form-group pull-left">
+                <div class="col-md-12">
+                    <div class="btn-group">
+                        <button ng-click="back()" type="button" class="btn btn-info">
+                            <span class="glyphicon glyphicon-off"></span>
+                            Regresar
+                        </button>
+
+<!--                        <button ng-disabled="isValid()" ng-show="!question.questionId" ng-click="save(null)" ng-disabled="isValid()" type="button" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-floppy-disk"></span>
+                            Guardar y Agregar Archivos
+                        </button>                       -->
+                        <button ng-disabled="isValid()" ng-click="save(false)" ng-disabled="isValid()" type="button" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-floppy-disk"></span>
+                            Guardar y Salir
+                        </button>                       
+                        <button ng-disabled="isValid()" ng-click="save(true)" ng-disabled="isValid()" type="button" class="btn btn-info">
+                            <span class="glyphicon glyphicon-floppy-disk"></span>
+                            Guardar y crear un nuevo registro
+                        </button>                       
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>                
+
+
+</div>
+
+   
+
+
+    <script type="text/ng-template" id="questionFiles.html">        
+        <div class="modal-header" ng-init="init()">
+            <h3 class="modal-title">Archivos Pregunta</h3>
+        </div>
+        <div class="modal-body">            
+            
+            <div id="dropzone">
+                <form id="dzFiles" action="api/upload.php" class="dropzone">
+                    <div class="fallback">
+                        <input name="files" type="file" multiple="" />
+                    </div>
+                </form>
+            </div>            
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-warning" ng-click="cancel()">Cerrar</button>
+        </div>
+    </script>    

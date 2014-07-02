@@ -1,0 +1,43 @@
+<div ng-show="showContent" class="well">
+    <button ng-click="new ()" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-file"></span> Nuevo Registro</button>
+    <br>
+    <br>
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    Termino
+                </th>
+                <th>
+                    Definici&oacute;n                    
+                </th>                    
+                <th>
+                    Acción
+                </th>
+            </tr>
+        </thead>
+        <tbody id="bookmarks-list">
+            <tr ng-repeat="dictionary in dictionaries| filter:searchText">
+                <td>
+                    {{dictionary.term}}
+                </td>                     
+
+                <td title="{{dictionary.definition}}">
+                    {{dictionary.definition}}
+                </td>
+                <td>
+                    <div class="btn-group pull-right">
+                        <a class="btn btn-warning btn-sm" href="#/dictionaries/{{dictionary.dictionaryId}}">
+                            <span class="glyphicon glyphicon-pencil"></span></a>
+                        <a href="javascript:void(0)" class="btn btn-danger btn-sm" ng-click="delete(dictionary.dictionaryId)">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>    
+    </table>
+</div>
+
+
+

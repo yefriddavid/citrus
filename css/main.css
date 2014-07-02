@@ -1,0 +1,55 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+
+/*Esto es par que no muestre los botones a la hora de imprimir el documento*/
+.btnNext{
+    display: inline !important;
+}
+
+
+.centered {
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.well{
+    background-color: #f5f5f5;
+    background-image: url('http://jumpstartuidemo.com/themes/base/css/../img/tiny_grid.png');
+    background-repeat: repeat;
+}
+
+
+.table{
+    background-color: white;
+}
+
+
+
+.table td{
+    vertical-align: middle !important;
+    /*overflow:      hidden;*/
+    max-width: 100px;
+    /*white-space:   nowrap;*/
+    /*   text-overflow: ellipsis;    */
+    white-space:nowrap;
+
+    text-overflow:ellipsis;
+
+    overflow:hidden;
+
+    /*width:190px;*/
+
+    /*display:block;*/
+}
+
+
+
+
+.s, .bs-callout-danger h4, .bs-callout-info h4{
+    color:inherit !important;
+}

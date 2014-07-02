@@ -1,0 +1,63 @@
+<div ng-show="showContent" class="well">
+    <button ng-click="new ()" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-file"></span> Nuevo Registro</button>
+    <br>
+    <br>
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    Identificación
+                </th>
+                <th>
+                    Usuario
+                </th>
+                <th>
+                    Nombre
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Read Only
+                </th>
+                <th>
+                    Acción
+                </th>
+            </tr>
+        </thead>
+        <tbody id="bookmarks-list">
+            <tr ng-repeat="user in users| filter:searchText">
+                <td>
+                    {{user.identification}}
+                </td>
+                <td>
+                    {{user.login}}
+                </td>
+                <td>
+                    {{user.fullName}}
+                </td>
+                <td>
+                    {{user.mail}}
+                </td>
+                <td>
+                    <span ng-show="user.isRoot == 1">No</span>
+                    <span ng-show="user.isRoot == 0">Si</span>
+                </td>
+                <td>
+                    <div class="btn-group pull-right">
+                        <a class="btn btn-warning btn-sm" href="#/users/{{user.userId}}">
+                            <span class="glyphicon glyphicon-pencil"></span></a>
+                        <a href="javascript:void(0)" class="btn btn-danger btn-sm" ng-click="delete(user.userId)">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>    
+    </table>
+</div>
+
+
+
+
+
